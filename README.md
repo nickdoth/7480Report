@@ -94,6 +94,13 @@ Create the template of confirm dialog in the scope:
 </script>
 ```
 
+Add `ng-click` attribute to the delete button:
+```html
+<a class="col-md-6 col-xs-6" 
+    style="color: #d9534f;" 
+    ng-click="confirm('/property/delete/<%= item.id %>', 'Delete Property')">Delete</a>
+```
+
 Finally, implement the controller:
 
 ```js
