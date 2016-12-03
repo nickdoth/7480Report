@@ -56,3 +56,75 @@ And then add the toolbar in `views/property/list.ejs`:
 And this is what it looks like:
 
 ![ListGroupToolbar](https://ob22ak52h.qnssl.com/ListGroupToolbar2.png)
+
+
+### Confirm Dialogs
+
+Confirm Dialogs are necessary for some irrevocable operations, like deleting properties. However, the `confirm()` function provided by browsers will block whole execution thread of javascript, and thus the web page can do nothing else before the function returns. Therefore, **Angular-Bootstrap** is used in this project to provide non-blocking confirm dialogs.
+
+In `list.ejs`, we add `<script>` tags for importing angular.js and angular-ui-bootstrap to our project:
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.3.0/ui-bootstrap-tpls.min.js"></script>
+```
+
+Since the project is already using bootstrap, we don't need to import it again.
+
+After that, create controller scope for the list:
+```html
+<div ng-controller="PropertyList" ng-app="app">
+    ...
+</div>
+```
+
+Create the template of confirm dialog in the scope:
+```html
+<script type="text/ng-template" id="confirmModal.html">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">{{ title }}</h4>
+    </div>
+    <div class="modal-body" id="modal-body">
+        {{ msg }}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="ok()" tabindex="-1">Delete</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+```
+
+Finally, implement the controller:
+
+```js
+angular.module('app', ['ui.bootstrap'])
+.controller('PropertyList', function($scope, $uibModal, $log, $http) {
+	$log.info('PropertyList');
+	$scope.confirm = function(url, title, msg) {
+		$log.info('confirm');
+		$uibModal.open({
+			templateUrl: 'confirmModal.html',
+			size: 'sm',
+			controller: function($scope, $uibModalInstance) {
+				$scope.title = title || 'Confirm';
+				$scope.msg = msg || 'Are you sure? This can not be undone!'
+				$scope.ok = function() {
+					location.href = url;
+					$uibModalInstance.close();
+				};
+				$scope.cancel = function() {
+					$uibModalInstance.dismiss();
+				};
+			}
+		})
+	};
+
+	$scope.toggleInterest = function(id) {
+
+	}
+});
+```
+
+With confirm dialogs, users will not easily delete properties by mistake.
+
+![ListGroupToolbar](https://ob22ak52h.qnssl.com/confirmModal.png)
