@@ -55,7 +55,7 @@ And then add the toolbar in `views/property/list.ejs`:
 
 And this is what it looks like:
 
-![ListGroupToolbar](https://ob22ak52h.qnssl.com/ListGroupToolbar2.png)
+![ListGroupToolbar](https://ob22ak52h.qnssl.com/ListGroupToolbar2.png?v2)
 
 
 ### Confirm Dialogs
@@ -106,9 +106,7 @@ Finally, implement the controller:
 ```js
 angular.module('app', ['ui.bootstrap'])
 .controller('PropertyList', function($scope, $uibModal, $log, $http) {
-	$log.info('PropertyList');
 	$scope.confirm = function(url, title, msg) {
-		$log.info('confirm');
 		$uibModal.open({
 			templateUrl: 'confirmModal.html',
 			size: 'sm',
@@ -125,10 +123,6 @@ angular.module('app', ['ui.bootstrap'])
 			}
 		})
 	};
-
-	$scope.toggleInterest = function(id) {
-
-	}
 });
 ```
 
