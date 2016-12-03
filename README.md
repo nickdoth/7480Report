@@ -140,7 +140,12 @@ var PersonController = {
 	show: function(req, res) {
 		Person.findOne(req.params.id).exec(function(err, person)) {
 			if (!person) return res.view('404', { msg: 'No such user' });
-			res.view('person/show', { person: p, list: p.properties || [] });
+			if (!req.wantsJson) {
+				res.view('person/show', { person: p, list: p.properties || [] });
+			}
+			else {
+				res.json(person);
+			}
 		});
 	}
 } 
@@ -148,6 +153,27 @@ var PersonController = {
 
 We found that most of these controllers are working in a similar pattern:
 
-- First, retrieve some data from a database (e.g MongoDB), then
+- First, retrieve some data from a database (e.g. MongoDB) via ORM, then
 - if the client is a browser and it wants a page, send a view filling with the data
 - if the client is an mobile app or the `XMLHttpRequest`, send JSON data to the client
+- if error occurs, send an error message in HTML or in JSON format (depends on the client)
+
+Thinking of this, I tried to encapsulate the common parts of controllers into a single function, so these controllers can be written in a clearer way.
+
+Now `PersonController.show` looks likes this:
+
+```javascript
+var PersonController = {
+	show: ctrlInfo({
+		GET: {
+			act: (req) => Person.findOne(req.params.id).populateAll().then(person => {
+				if (!person) throw 'No such user';
+				return person;
+			}),
+			json: p => p,
+			view: p => ['person/show', { person: p, list: p.properties || [] }],
+			viewError: err => ['404', { msg: err }]
+		}
+	})
+}
+```
