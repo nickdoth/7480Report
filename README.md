@@ -8,7 +8,7 @@ A toolbar was added on the bottom of each property card in the property list. Ea
 
 Since Bootstrap does not support putting two or more `list-group-items` into one single line, we implement this feature.
 
-Styles in `assets/styles/importer.less`:
+Firest we add some styles in `assets/styles/importer.less`:
 ```less
 .list-group-item-bar {
     padding: 0 0 !important;
@@ -33,7 +33,7 @@ Styles in `assets/styles/importer.less`:
 }
 ```
 
-Toolbar in `views/property/list.ejs`:
+And then add the toolbar in `views/property/list.ejs`:
 ```ejs
 <span class="list-group-item-bar list-group-item clearfix">
 	<% if (item.owner) { %>
