@@ -6,9 +6,9 @@
 
 A toolbar was added on the bottom of each property card in the property list. Each toolbar has some buttons to provide express access to some fequently used functionalities such as update & delete properties and declare & cancel interest.
 
-Since Bootstrap does not support putting two or more `list-group-items` into one single line, we implement this feature.
+Since Bootstrap does not support putting two or more `list-group-items` into one single line, we implemented this feature.
 
-Firest we add some styles in `assets/styles/importer.less`:
+First we add some styles in `assets/styles/importer.less`:
 ```less
 .list-group-item-bar {
     padding: 0 0 !important;
