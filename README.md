@@ -153,7 +153,8 @@ var PersonController = {
 
 We found that most of these controllers are working in a similar pattern:
 
-- First, retrieve some data from a database (e.g. MongoDB) via ORM, then
+- Accept request from the client, and then
+- retrieve some data from a database (e.g. MongoDB) via ORM, then
 - if the client is a browser and it wants a page, send a view filling with the data
 - if the client is an mobile app or the `XMLHttpRequest`, send JSON data to the client
 - if error occurs, send an error message in HTML or in JSON format (depends on the client)
@@ -165,13 +166,18 @@ Now `PersonController.show` looks likes this:
 ```javascript
 var PersonController = {
 	show: ctrlInfo({
+		// Accept GET request
 		GET: {
+			// Retrieve some data from database
 			act: (req) => Person.findOne(req.params.id).populateAll().then(person => {
 				if (!person) throw 'No such user';
 				return person;
 			}),
+			// Send JSON if the client wants
 			json: p => p,
+			// Send HTML if the client wants
 			view: p => ['person/show', { person: p, list: p.properties || [] }],
+			// Send error page if error occurs
 			viewError: err => ['404', { msg: err }]
 		}
 	})
