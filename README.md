@@ -129,3 +129,25 @@ angular.module('app', ['ui.bootstrap'])
 With confirm dialogs, users will not easily delete properties by mistake.
 
 ![ListGroupToolbar](https://ob22ak52h.qnssl.com/confirmModal.png)
+
+
+### Sails Controllers
+
+The web server of the project was based on **sails.js**, a easy-to-use MVC framework of node.js. A typical controler of the project would look like this:
+
+```javascript
+var PersonController = {
+	show: function(req, res) {
+		Person.findOne(req.params.id).exec(function(err, person)) {
+			if (!person) return res.view('404', { msg: 'No such user' });
+			res.view('person/show', { person: p, list: p.properties || [] });
+		});
+	}
+} 
+```
+
+We found that most of these controllers are working in a similar pattern:
+
+- First, retrieve some data from a database (e.g MongoDB), then
+- if the client is a browser and it wants a page, send a view filling with the data
+- if the client is an mobile app or the `XMLHttpRequest`, send JSON data to the client
