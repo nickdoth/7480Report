@@ -52,3 +52,7 @@ Toolbar in `views/property/list.ejs`:
 	<% } %>
 </span>
 ```
+
+And this is what it looks like:
+
+![ListGroupToolbar]()
