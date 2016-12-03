@@ -158,7 +158,7 @@ We found that most of these controllers are working in a similar pattern:
 - if the client is an mobile app or the `XMLHttpRequest`, send JSON data to the client
 - if error occurs, send an error message in HTML or in JSON format (depends on the client)
 
-Thinking of this, I tried to encapsulate the common parts of controllers into a single function, so these controllers can be written in a clearer way.
+Thinking of this, I tried to encapsulate the common parts of controllers into a single function, so these controllers can be _described_ in a clearer way.
 
 Now `PersonController.show` looks likes this:
 
@@ -177,3 +177,5 @@ var PersonController = {
 	})
 }
 ```
+
+The code of function `ctrlInfo(...)` can be found [here](https://github.com/nickdoth/sails-ctrlinfo).
