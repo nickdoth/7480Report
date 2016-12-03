@@ -4,7 +4,7 @@
 
 ### Toolbar in ListGroup
 
-A toolbar was added on the bottom of each property card in the property list. Each toolbar has some buttons to provide express access to some fequently used functionalities such as update and delete properties.
+A toolbar was added on the bottom of each property card in the property list. Each toolbar has some buttons to provide express access to some fequently used functionalities such as update & delete properties and declare & cancel interest.
 
 Since Bootstrap does not support putting two or more `list-group-items` into one single line, we implement this feature.
 
@@ -55,4 +55,4 @@ And then add the toolbar in `views/property/list.ejs`:
 
 And this is what it looks like:
 
-![ListGroupToolbar](https://ob22ak52h.qnssl.com/ListGroupToolbar.png)
+![ListGroupToolbar](https://ob22ak52h.qnssl.com/ListGroupToolbar2.png)
