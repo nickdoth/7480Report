@@ -55,4 +55,4 @@ Toolbar in `views/property/list.ejs`:
 
 And this is what it looks like:
 
-![ListGroupToolbar]()
+![ListGroupToolbar](https://ob22ak52h.qnssl.com/ListGroupToolbar.png)
