@@ -12,6 +12,7 @@ A toolbar was added on the bottom of each property card in the property list. Ea
 Since Bootstrap does not support putting two or more `list-group-items` into one single line, we implemented this feature.
 
 First we add some styles in `assets/styles/importer.less`:
+
 ```less
 .list-group-item-bar {
     padding: 0 0 !important;
@@ -37,6 +38,7 @@ First we add some styles in `assets/styles/importer.less`:
 ```
 
 And then add the toolbar in `views/property/list.ejs`:
+
 ```ejs
 <span class="list-group-item-bar list-group-item clearfix">
 	<% if (item.owner) { %>
@@ -74,6 +76,7 @@ In `list.ejs`, we add `<script>` tags for importing angular.js and angular-ui-bo
 Since the project is already using bootstrap, we don't need to import it again.
 
 After that, create controller scope for the list:
+
 ```html
 <div ng-controller="PropertyList" ng-app="app">
     ...
@@ -81,6 +84,7 @@ After that, create controller scope for the list:
 ```
 
 Create the template of confirm dialog in the scope:
+
 ```html
 <script type="text/ng-template" id="confirmModal.html">
     <div class="modal-header">
@@ -97,6 +101,7 @@ Create the template of confirm dialog in the scope:
 ```
 
 Add `ng-click` attribute to the delete button:
+
 ```html
 <a class="col-md-6 col-xs-6" 
     style="color: #d9534f;" 
@@ -253,6 +258,7 @@ function isInterested(id) {
 ```
 
 In `app/controllers/property.js`:
+
 ```javascript
 function init() {
     var user = Alloy.Globals.userSession;
