@@ -185,3 +185,88 @@ var PersonController = {
 ```
 
 The code of function `ctrlInfo(...)` can be found [here](https://github.com/nickdoth/sails-ctrlinfo).
+
+## Bonus features in the mobile app
+
+### Like/Unlike Toggle Button
+
+Instead of showing both `Like` and `Unlike` on the toogle button at right top corner of the property card, the button will show what users will actully do when they click on it: When the interest is declared, the button's title will be 'Unlike', and vice versa. 
+
+This means that each property card should:
+
+- be able to access the user session data, in order to judge whether the user has declared interest on the property no not;
+- be able to update state of the like button when the interest was declared or cancelled from somewhere outside the property card.
+
+To do these two, we firstly export user session from the user controller, so that they can be accessed across the app. And then make the user controller fire an `ProfileChanged` event when the user profile changed. Finally, in the property card controller, we subscribe the `ProfieChanged` event, and change title of the interest decalration button on demand.
+
+In `app/controllers/user.js`:
+
+```javascript
+Alloy.Globals.userSession = {
+    updateUserProfile: updateUserProfile,
+    toggleInterest: toggleInterest,
+    isInterested: isInterested,
+    state: state,
+    onProfileChanged: function(listener) {
+        $.getView().addEventListener('profilechanged', listener);
+        return function() {
+            $.getView().removeEventListener('profilechanged', listener);
+        };
+    }
+};
+
+function toggleInterest(id) {
+    if (!state.logged) {
+        alert('Please login to declare/cancel interests.');
+        login();
+        return;
+    }
+    var whiches = state.interested.map(function(interest) { return interest.which });
+    var url = '', addOp = true;
+    if (whiches.indexOf(id) >= 0) {
+        url = Alloy.Globals.serverUrl + '/interest/delete/' + id;
+        addOp = false;
+    }
+    else {
+        url = Alloy.Globals.serverUrl + '/interest/add/' + id;
+        addOp = true;
+    }
+    var xhr = Ti.Network.createHTTPClient();
+    xhr.onload = function(e) {
+        //handle response, which at minimum will be an HTTP status code
+        var json = JSON.parse(this.responseText);
+        updateUserProfile();
+        alert(addOp ? 'Interest declared' : 'Interest deleted');
+    };
+    xhr.open('GET', url);
+    xhr.send();
+}
+
+function isInterested(id) {
+    return state.logged && state.interested.map(
+        function(interest) { return interest.which }).indexOf(id) >= 0;
+}
+
+// ...other parts of the controller
+```
+
+In `app/controllers/property.js`:
+```javascript
+function init() {
+    var user = Alloy.Globals.userSession;
+    $.btn_like.title = user.isInterested($.args.uid) ? 
+        'Unlike' : 'Like';
+
+    var removeListener = user.onProfileChanged(function(ev) {
+        $.btn_like.title = user.isInterested($.args.uid) ? 
+            'Unlike' : 'Like';
+    });
+	
+	$.getView().addEventListener('close', function() {
+		removeListener();
+		$.destroy();
+	});
+}
+
+init();
+```
