@@ -278,3 +278,9 @@ function init() {
 
 init();
 ```
+
+Now, when user click on the 'Like' button and it will alert "Interest Declared", and the button title will become "Unlike".
+
+![mo0](https://ob22ak52h.qnssl.com/mo0.png)
+
+![mo](https://ob22ak52h.qnssl.com/mo.png)
