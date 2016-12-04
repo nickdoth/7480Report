@@ -4,7 +4,7 @@
 
 ### Toolbar in ListGroup
 
-A toolbar was added on the bottom of each property card in the property list. Each toolbar has some buttons to provide express access to some fequently used functionalities such as update & delete properties and declare & cancel interest.
+A toolbar was added on the bottom of each property card in the property list. Each toolbar has some buttons to provide express access to some frequently used functionalities such as update & delete properties and declare & cancel interest.
 
 Since Bootstrap does not support putting two or more `list-group-items` into one single line, we implemented this feature.
 
