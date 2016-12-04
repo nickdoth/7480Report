@@ -26,12 +26,12 @@ First we add some styles in `assets/styles/importer.less`:
         border-right: 1px solid #ddd;
 
         &:last-child {
-        border-right: 0;
+            border-right: 0;
         }
 
         &:hover {
-        background-color: #f5f5f5;
-        text-decoration: none;
+            background-color: #f5f5f5;
+            text-decoration: none;
         }
     }
 }
