@@ -1,4 +1,7 @@
 # Introduction to Property Rental System
+WU DIFEI 16428234
+
+The Proprty Rental System is a web-based system to provide a easy way to share flat resources and look for roomates. This system also provides a moblie apps for moblie devices. This report will mainly talk about bonus features of the system.
 
 ## Bonus in Web System
 
