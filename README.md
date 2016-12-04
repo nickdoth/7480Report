@@ -40,14 +40,13 @@ And then add the toolbar in `views/property/list.ejs`:
 		<% if ((typeof item.owner === 'object' && item.owner.id === req.session.uid) ||
 			item.owner === req.session.uid || 
 			req.session.user_group === 'admin') { %>
-				<a class="list-group-item-baritem col-md-6 col-xs-6"
+				<a class="col-md-6 col-xs-6"
 					href="/property/update/<%= item.id %>">Update</a>
-				<a class="list-group-item-baritem col-md-6 col-xs-6" 
+				<a class="col-md-6 col-xs-6" 
 					style="color: #d9534f;"
 					data-danger-action="/property/delete/<%= item.id %>">Delete</a>
 		<% } else { %>
-				<a class="list-group-item-baritem" 
-					href="/property/show/<%= item.id %>">Detail</a>
+				<a href="/property/show/<%= item.id %>">Detail</a>
 		<% } %>
 	<% } %>
 </span>
