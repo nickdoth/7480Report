@@ -14,25 +14,25 @@ Since Bootstrap does not support putting two or more `list-group-items` into one
 First we add some styles in `assets/styles/importer.less`:
 
 ```less
-.list-group-item-bar {
+.list-group-toolbar {
     padding: 0 0 !important;
-}
+    
+    & > a {
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #555;
+        text-align: center;
+        border-right: 1px solid #ddd;
 
-.list-group-item-baritem {
-    display: block;
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #555;
-    text-align: center;
-    border-right: 1px solid #ddd;
-
-    &:last-child {
+        &:last-child {
         border-right: 0;
-    }
+        }
 
-    &:hover {
+        &:hover {
         background-color: #f5f5f5;
         text-decoration: none;
+        }
     }
 }
 ```
@@ -40,20 +40,20 @@ First we add some styles in `assets/styles/importer.less`:
 And then add the toolbar in `views/property/list.ejs`:
 
 ```ejs
-<span class="list-group-item-bar list-group-item clearfix">
-	<% if (item.owner) { %>
-		<% if ((typeof item.owner === 'object' && item.owner.id === req.session.uid) ||
-			item.owner === req.session.uid || 
-			req.session.user_group === 'admin') { %>
-				<a class="col-md-6 col-xs-6"
-					href="/property/update/<%= item.id %>">Update</a>
-				<a class="col-md-6 col-xs-6" 
-					style="color: #d9534f;"
-					data-danger-action="/property/delete/<%= item.id %>">Delete</a>
-		<% } else { %>
-				<a href="/property/show/<%= item.id %>">Detail</a>
-		<% } %>
-	<% } %>
+<span class="list-group-toolbar list-group-item clearfix">
+    <% if (item.owner) { %>
+        <% if ((typeof item.owner === 'object' && item.owner.id === req.session.uid) ||
+            item.owner === req.session.uid || 
+            req.session.user_group === 'admin') { %>
+            <a class="col-md-6 col-xs-6"
+                href="/property/update/<%= item.id %>">Update</a>
+            <a class="col-md-6 col-xs-6" 
+                style="color: #d9534f;"
+                data-danger-action="/property/delete/<%= item.id %>">Delete</a>
+        <% } else { %>
+            <a href="/property/show/<%= item.id %>">Detail</a>
+        <% } %>
+    <% } %>
 </span>
 ```
 
@@ -113,23 +113,23 @@ Finally, implement the controller:
 ```js
 angular.module('app', ['ui.bootstrap'])
 .controller('PropertyList', function($scope, $uibModal, $log, $http) {
-	$scope.confirm = function(url, title, msg) {
-		$uibModal.open({
-			templateUrl: 'confirmModal.html',
-			size: 'sm',
-			controller: function($scope, $uibModalInstance) {
-				$scope.title = title || 'Confirm';
-				$scope.msg = msg || 'Are you sure? This can not be undone!'
-				$scope.ok = function() {
-					location.href = url;
-					$uibModalInstance.close();
-				};
-				$scope.cancel = function() {
-					$uibModalInstance.dismiss();
-				};
-			}
-		})
-	};
+    $scope.confirm = function(url, title, msg) {
+        $uibModal.open({
+            templateUrl: 'confirmModal.html',
+            size: 'sm',
+            controller: function($scope, $uibModalInstance) {
+                $scope.title = title || 'Confirm';
+                $scope.msg = msg || 'Are you sure? This can not be undone!'
+                $scope.ok = function() {
+                    location.href = url;
+                    $uibModalInstance.close();
+                };
+                $scope.cancel = function() {
+                    $uibModalInstance.dismiss();
+                };
+            }
+        })
+    };
 });
 ```
 
@@ -144,17 +144,17 @@ The web server of the project was based on **sails.js**, a easy-to-use MVC frame
 
 ```javascript
 var PersonController = {
-	show: function(req, res) {
-		Person.findOne(req.params.id).exec(function(err, person)) {
-			if (!person) return res.view('404', { msg: 'No such user' });
-			if (!req.wantsJson) {
-				res.view('person/show', { person: p, list: p.properties || [] });
-			}
-			else {
-				res.json(person);
-			}
-		});
-	}
+    show: function(req, res) {
+        Person.findOne(req.params.id).exec(function(err, person)) {
+            if (!person) return res.view('404', { msg: 'No such user' });
+            if (!req.wantsJson) {
+                res.view('person/show', { person: p, list: p.properties || [] });
+            }
+            else {
+                res.json(person);
+            }
+        });
+    }
 } 
 ```
 
@@ -172,22 +172,22 @@ Now `PersonController.show` looks likes this:
 
 ```javascript
 var PersonController = {
-	show: ctrlInfo({
-		// Accept GET request
-		GET: {
-			// Retrieve some data from database
-			act: (req) => Person.findOne(req.params.id).populateAll().then(person => {
-				if (!person) throw 'No such user';
-				return person;
-			}),
-			// Send JSON if the client wants
-			json: p => p,
-			// Send HTML if the client wants
-			view: p => ['person/show', { person: p, list: p.properties || [] }],
-			// Send error page if error occurs
-			viewError: err => ['404', { msg: err }]
-		}
-	})
+    show: ctrlInfo({
+        // Accept GET request
+        GET: {
+            // Retrieve some data from database
+            act: (req) => Person.findOne(req.params.id).populateAll().then(person => {
+                if (!person) throw 'No such user';
+                return person;
+            }),
+            // Send JSON if the client wants
+            json: p => p,
+            // Send HTML if the client wants
+            view: p => ['person/show', { person: p, list: p.properties || [] }],
+            // Send error page if error occurs
+            viewError: err => ['404', { msg: err }]
+        }
+    })
 }
 ```
 
@@ -270,10 +270,10 @@ function init() {
             'Unlike' : 'Like';
     });
 	
-	$.getView().addEventListener('close', function() {
-		removeListener();
-		$.destroy();
-	});
+    $.getView().addEventListener('close', function() {
+        removeListener();
+        $.destroy();
+    });
 }
 
 init();
